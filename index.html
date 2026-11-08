@@ -31,7 +31,7 @@ body{color:var(--ink);font-family:var(--kr);font-size:16px;line-height:1.6;min-h
   background-image:
     repeating-linear-gradient(45deg,rgba(255,255,255,.07) 0 1px,transparent 1px 4px),
     repeating-linear-gradient(-45deg,rgba(60,0,10,.08) 0 1px,transparent 1px 4px),
-    repeating-linear-gradient(90deg,var(--berry) 0 112px,var(--rose) 112px 240px);
+    repeating-linear-gradient(90deg,var(--berry) 0 46px,var(--rose) 46px 92px);
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 body::after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.5;mix-blend-mode:multiply;z-index:0;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .4  0 0 0 0 .2  0 0 0 0 .22  0 0 0 .25 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
@@ -43,9 +43,9 @@ h1,h2{margin:0;font-weight:400;text-wrap:balance}
 
 /* cross-stitch title */
 .stitch{display:flex;flex-direction:column;align-items:center;gap:6px}
-.stitch canvas{display:block;max-width:100%}
+.stitch canvas{display:block;max-width:none;box-sizing:content-box;padding:clamp(12px,3vw,22px) clamp(14px,3.6vw,28px);background:var(--berry-deep);border-radius:10px;outline:2px dashed rgba(253,250,245,.6);outline-offset:-8px;box-shadow:0 12px 26px rgba(40,4,10,.5),0 0 0 5px rgba(253,250,245,.14)}
 .stitch .fallback{font-family:var(--stitch);font-weight:700;color:#fff;font-size:clamp(44px,12vw,88px);line-height:1;text-align:center;text-shadow:0 2px 0 rgba(0,0,0,.15)}
-.whisper{font-family:var(--mono);font-size:14px;color:#fff;text-align:center;letter-spacing:.04em;text-shadow:0 1px 4px rgba(60,0,10,.6);margin:0}
+.whisper{font-family:var(--mono);font-size:14px;color:#fff;text-align:center;letter-spacing:.04em;margin:0 auto;width:fit-content;max-width:100%;background:rgba(111,20,32,.92);padding:3px 14px;border-radius:999px;box-shadow:0 3px 8px rgba(40,4,10,.3)}
 
 /* envelope */
 .env{position:relative;margin-top:26px;filter:drop-shadow(0 10px 18px rgba(60,0,12,.28))}
@@ -185,7 +185,7 @@ h1,h2{margin:0;font-weight:400;text-wrap:balance}
   background:rgba(253,250,245,.9);color:var(--berry);border:0;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;box-shadow:0 3px 8px rgba(60,10,20,.25)}
 
 @media (max-width:520px){
-  body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.07) 0 1px,transparent 1px 4px),repeating-linear-gradient(-45deg,rgba(60,0,10,.08) 0 1px,transparent 1px 4px),repeating-linear-gradient(90deg,var(--berry) 0 64px,var(--rose) 64px 140px)}
+  body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.07) 0 1px,transparent 1px 4px),repeating-linear-gradient(-45deg,rgba(60,0,10,.08) 0 1px,transparent 1px 4px),repeating-linear-gradient(90deg,var(--berry) 0 30px,var(--rose) 30px 60px)}
   .grid{gap:10px}
   .wall{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px}
 }
@@ -268,10 +268,10 @@ function stitch(canvas,lines,{maxCell=13,color="#ffffff"}={}){
     off.width=W;off.height=H;o.font=F;o.textBaseline="top";o.fillStyle="#000";
     lines.forEach((l,i)=>o.fillText(l,Math.round((W-widths[i])/2),i*LH+2));
     const px=o.getImageData(0,0,W,H).data;const cols=Math.ceil(W/2),rows=Math.ceil(H/2);
-    const avail=Math.max(160,canvas.parentElement.clientWidth);const cell=Math.max(4,Math.min(maxCell,Math.floor(avail/cols)));
+    const avail=Math.max(160,canvas.parentElement.clientWidth-60);const cell=Math.max(4,Math.min(maxCell,Math.floor(avail/cols)));
     const dpr=window.devicePixelRatio||1;canvas.width=cols*cell*dpr;canvas.height=rows*cell*dpr;canvas.style.width=cols*cell+"px";canvas.style.height=rows*cell+"px";
-    const c=canvas.getContext("2d");c.scale(dpr,dpr);c.lineCap="round";c.lineWidth=Math.max(1.2,cell*.26);c.strokeStyle=color;
-    c.shadowColor="rgba(50,0,10,.35)";c.shadowOffsetY=Math.max(1,cell*.08);c.shadowBlur=cell*.15;
+    const c=canvas.getContext("2d");c.scale(dpr,dpr);c.lineCap="round";c.lineWidth=Math.max(1.6,cell*.34);c.strokeStyle=color;
+    c.shadowColor="rgba(20,0,5,.55)";c.shadowOffsetY=Math.max(1,cell*.08);c.shadowBlur=cell*.15;
     const ins=cell*.18;
     for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
       const sx=Math.min(W-1,x*2+1),sy=Math.min(H-1,y*2+1);if(px[(sy*W+sx)*4+3]<110)continue;
